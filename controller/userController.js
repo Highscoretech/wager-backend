@@ -7,7 +7,8 @@ const { format } = require("date-fns");
 // const { createCashbackTable } = require("../profile_mangement/cashbacks");
 const currentTime = format(new Date(), "yyyy-MM-dd HH:mm:ss");
 const Chats = require("../model/public-chat");
-const {createWGF, createEth, createbtc, createwagerToken, handleDefaultWallet  } = require("../wallet_transaction/index")
+const {createWGF, createEth, createbtc, createwagerToken, 
+  handleDefaultWallet  } = require("../wallet_transaction/index")
 const { InitializeDiceGame } = require("../controller/diceControllers");
 // const { InitializePlinkoGame } = require("../controller/plinkoController");
 const { CheckValidity } = require("./affiliateControllers");
