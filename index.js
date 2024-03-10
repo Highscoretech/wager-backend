@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
+const User = require("./routes/Users.js");
+
+
 require("dotenv").config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,9 +16,7 @@ app.get("/", (req, res)=>{
     res.status(200).json({perfect:"Welcome to Wager.io"})
   })
 
-app.get("/profile", (req, res)=>{
-res.status(200).json({user:"My name is Valiant"})
-})
+ app.use("/api/users", User);
 
 
 const PORT = process.env.PORT || 5000; 
