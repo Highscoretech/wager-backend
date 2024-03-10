@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
@@ -18,7 +19,13 @@ res.status(200).json({user:"My name is Valiant"})
 
 
 const PORT = process.env.PORT || 5000; 
-
-app.listen(PORT, () => { 
-    console.log(`Server is running on port ${PORT}`);
- });
+mongoose.set('strictQuery', false);
+// connect database
+// const dbUri = `mongodb://localhost:27017/wager`
+const dbUri = `mongodb+srv://highscoreteh:eNiIQbm4ZMSor8VL@cluster0.xmpkpjc.mongodb.net/wager?retryWrites=true&w=majority`
+mongoose.connect(dbUri, { useNewUrlParser: true,  useUnifiedTopology: true })
+    .then((result)=>  console.log('Database connected'))
+    .catch((err)=> console.log(err))
+app.listen(process.env.PORT, ()=>{
+    console.log("Running on port "+ process.env.PORT)
+})
