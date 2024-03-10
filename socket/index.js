@@ -1,8 +1,7 @@
 const { Server } = require("socket.io");
 const WGFWallet = require("../model/WGF-wallet");
 const Chats = require("../model/public-chat");
-const {
-  handleHiloBet,
+const {  handleHiloBet,
   handleHiloNextRound,
   handleHiloCashout,
   initHiloGame,
