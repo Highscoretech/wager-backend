@@ -20,12 +20,11 @@ async function main() {
 main();
 
 app.get("/", (req, res)=>{
-    res.status(200).json({perfect:"Welcome to Wager.io"})
+    res.status(200).json({perfect:"Welcome to Wager.io chat please na"})
   })
 
  app.use("/api/users", User);
  app.use("/api/profile", Profile);
-
 
 const PORT = process.env.PORT || 5000; 
 mongoose.set('strictQuery', false);

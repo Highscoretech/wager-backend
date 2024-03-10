@@ -1,10 +1,8 @@
 const { Server } = require("socket.io");
 const WGFWallet = require("../model/WGF-wallet");
 const Chats = require("../model/public-chat");
-const {  handleHiloBet,
-  handleHiloNextRound,
-  handleHiloCashout,
-  initHiloGame,
+const { handleHiloBet, handleHiloNextRound,
+  handleHiloCashout, initHiloGame,
 } = require("../controller/hiloController");
 const { CrashGameEngine } = require("../controller/crashControllers");
 const BTC_wallet = require("../model/btc-wallet");
