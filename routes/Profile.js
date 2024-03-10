@@ -13,8 +13,6 @@ const {  SingleUser,  UpdateUser, UpdateProfile,
 // const {handleClaimRechargeBonus, handleRechargeActivation } = require("../profile_mangement/rechargebonus")
 // const { handleRedeemFlashDrop } = require("../profile_mangement/flashdropredeem")
 
-
-
 router.get('/', SingleUser)
 router.post('/update-user', UpdateUser)
 router.post('/update-profile', UpdateProfile)

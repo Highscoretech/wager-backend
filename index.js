@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const { createsocket } = require("./socket/index.js");
+const { createServer } = require("node:http");
 
 const User = require("./routes/Users.js");
 const Profile = require("./routes/Profile.js");
@@ -11,6 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+const server = createServer(app);
+async function main() {
+  createsocket(server);
+}
+main();
 
 app.get("/", (req, res)=>{
     res.status(200).json({perfect:"Welcome to Wager.io"})
@@ -28,6 +35,6 @@ const dbUri = `mongodb+srv://highscoreteh:eNiIQbm4ZMSor8VL@cluster0.xmpkpjc.mong
 mongoose.connect(dbUri, { useNewUrlParser: true,  useUnifiedTopology: true })
     .then((result)=>  console.log('Database connected'))
     .catch((err)=> console.log(err))
-app.listen(process.env.PORT, ()=>{
+server.listen(process.env.PORT, ()=>{
     console.log("Running on port "+ process.env.PORT)
 })
