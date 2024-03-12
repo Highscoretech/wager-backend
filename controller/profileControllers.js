@@ -86,13 +86,12 @@ const SingleUser = (async(req, res)=>{
         res.status(500).json({ error: "No user found" });
       } 
       else {
-
-        const users = await Profile.find({user_id})
-        const btc = await BTCtWallet.find({user_id})
-        const wgf = await WGFWallet.find({user_id})
-        const eth = await ETHWallet.find({user_id})
-        const wgd = await WGDWallet.find({user_id})
-        let wallet = [btc[0], wgf[0], eth[0], wgd[0]]
+        const users = await Profile.findOne({user_id})
+        const btc = await BTCtWallet.findOne({user_id})
+        const wgf = await WGFWallet.findOne({user_id})
+        const eth = await ETHWallet.findOne({user_id})
+        const wgd = await WGDWallet.findOne({user_id})
+        let wallet = [btc, wgf, eth, wgd]
         res.status(200).json({users, wallet})
     }
   } catch (err) {
