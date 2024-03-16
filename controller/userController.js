@@ -30,12 +30,16 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, SECRET, { expiresIn: "9d" });
 };
 
+const handleColors = (()=>{
+  let color = [{color:"red", color: "blue", color: "black", color: "grey", color: "lemon", color: "blown"}]
+  const random = Math.floor(Math.random() * color.length);
+  return (color[random])
+})
 
 const Register = async (req, res) => {
   const {data} = req.body;
   let invited_code = data.reff ? data.reff : "";
   let user_id = data.user.uid
- 
   if (invited_code) {
     let validateCode = await CheckValidity(invited_code, user_id);
     if (validateCode) {
@@ -56,7 +60,7 @@ const Register = async (req, res) => {
       refuse_friends_request: false,
       refuse_tips: false,
       username: data.username ? data.username : data.user.displayName,
-      profile_image: data.user.photoURL ? data.user.photoURL : "https://res.cloudinary.com/dxwhz3r81/image/upload/v1709046469/download_glkb9j.png",
+      profile_image: data.user.photoURL ? {image: data.user.photoURL} : handleColors(),
       vip_level: 0,
       kyc_is_activated: false,
       phone: "-",

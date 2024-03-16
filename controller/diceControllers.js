@@ -1,4 +1,6 @@
 const crypto = require('crypto');
+const Ably = require('ably/promises');
+const { handlePublicChat } = require("../socket/ably")
 // const { handleWagerIncrease, handleProfileTransactions } = require("../profile_mangement/index")
 const DiceEncription = require("../model/dice_encryped_seeds");
 const DiceGame = require("../model/dice_game");
@@ -91,6 +93,7 @@ async function handleUpdatewallet(data) {
           { user_id: data.user_id },
           { balance: current_amount }
         );
+
       }
     }
   }
@@ -102,11 +105,15 @@ async function handleUpdatewallet(data) {
 
 async function handleDiceBEt(data) {
   let events = data[0];
+  
   try {
     // if (events.token !== "WGF") {
     //   handleWagerIncrease(events);
     // }
     let result = await DiceGame.create(events);
+   let ably = await handlePublicChat()
+   const channel = ably.channels.get("dice-game")
+   await channel.publish("all-bet", events)
   }
   catch (error) {
     console.log(error);
