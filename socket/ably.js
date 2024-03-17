@@ -24,6 +24,6 @@ async function publishSubscribe() {
         handleChatMessages(message.data)
     });
 }
-publishSubscribe()
+// publishSubscribe()
 
 module.exports = { handlePublicChat }

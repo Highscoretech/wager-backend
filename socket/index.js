@@ -186,31 +186,15 @@ async function createsocket(httpServer) {
 
   let newMessage = await Chats.find();
   const handleNewChatMessages = async (data) => {
-    if (data.type === "tip") {
-      await handleTip(data);
+    if(newMessage.length > 100){
+      newMessage.shift()
+      newMessage.push(data)
     }
-    if (data.type === "rain") {
-      data = await handleRain(data, activeUsers);
+    else{
+      newMessage.push(data)
     }
-
-    if (data.type === "coin_drop") {
-      await handleCoinDrop(data);
-    }
-
-    const newChat = await Chats.create({
-      ...data,
-      coin_drop_balance: data.coin_drop_amount || 0,
-    });
-
-    if (newChat) {
-      newMessage = [];
-      newMessage = await Chats.find();
-      if (newMessage)
-        io.emit("new-messages", {
-          newMessage,
-          active_user_num: activeUsers.length,
-        });
-    }
+    io.emit("new-messages", newMessage);
+    await Chats.create({ ...data, coin_drop_balance: data.coin_drop_amount || 0 });
   };
 
   let active_keno_games = [];
@@ -316,7 +300,7 @@ async function createsocket(httpServer) {
 
     socket.on("message", (data) => {
       handleNewChatMessages(data);
-      requestActiveUsers(data.profile);
+      // requestActiveUsers(data.profile);
     });
 
     socket.on("grab_coin", (data) => {
