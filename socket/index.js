@@ -26,18 +26,6 @@ const detectWallet = (type) => {
   }
 };
 
-const deductFromWalletBalance = async (wallet, amount, user_id) => {
-  const wallet_details = await wallet.findOne({ user_id });
-  if (wallet_details) {
-    const available_balance = wallet_details.balance;
-    if (amount > available_balance) return "less";
-    const new_balance = parseFloat(available_balance) - parseFloat(amount);
-    await wallet.findOneAndUpdate({ user_id }, { balance: new_balance });
-    return "done";
-  } else {
-    return "not-found";
-  }
-};
 
 const addToWalletBalance = async (wallet, amount, user_id) => {
   let new_balance = amount;
@@ -50,56 +38,6 @@ const addToWalletBalance = async (wallet, amount, user_id) => {
   } else {
     return "not-found";
   }
-};
-
-const handleCoinDrop = async (data) => {
-  const amount = data.coin_drop_amount;
-  const wallet = detectWallet(data.coin_drop_token);
-  const user_id = data.user_id;
-
-  const dropper = await Profile.findOne({ user_id });
-  if (dropper.vip_level < 7) {
-    return;
-  }
-  return deductFromWalletBalance(wallet, amount, user_id);
-};
-
-const handleRain = async (data, activeUsers) => {
-  const wallet = detectWallet(data.coin_rain_token);
-  let { user_id, coin_rain_amount, coin_rain_num, coin_rain_participant } =
-    data;
-  const isDeducted = await deductFromWalletBalance(
-    wallet,
-    coin_rain_amount,
-    user_id
-  );
-  if (isDeducted === "done") {
-    const share = coin_rain_amount / coin_rain_num;
-    for (let i = 0; i < activeUsers.length; i++) {
-      if (user_id !== activeUsers[i].id) {
-        coin_rain_participant.push({
-          user_id: activeUsers[i].id,
-          username: activeUsers[i].username,
-          share,
-          grabbed_at: new Date(),
-        });
-        await addToWalletBalance(wallet, share, activeUsers[i].id);
-      }
-    }
-  }
-  data.coin_rain_participant = coin_rain_participant;
-  return data;
-};
-
-const handleTip = async (data) => {
-  const amount = data.tipped_amount;
-  const wallet = detectWallet(data.tip_Token);
-  const user_id = data.user_id;
-  const receiverUsername = data.tipped_user;
-  const receiver = await Profile.findOne({ username: receiverUsername });
-  let deduction = await deductFromWalletBalance(wallet, amount, user_id);
-  if (deduction === "done")
-    await addToWalletBalance(wallet, amount, receiver.user_id);
 };
 
 async function createsocket(httpServer) {
@@ -141,48 +79,6 @@ async function createsocket(httpServer) {
     io.emit("active-bets-crash", active_crash);
   };
 
-  let activeUsers = [];
-  const requestActiveUsers = (profile) => {
-    const findUserIndex = (userId) => {
-      return activeUsers.findIndex((user) => user.id === userId);
-    };
-
-    const addOrUpdateUser = (profile) => {
-      const userIndex = findUserIndex(profile.user_id);
-      if (userIndex !== -1) {
-        activeUsers[userIndex].timestamp = new Date();
-      } else {
-        activeUsers.push({
-          username: profile.username,
-          id: profile.user_id,
-          timestamp: new Date(),
-        });
-      }
-    };
-
-    const removeInactiveUsers = () => {
-      const currentTime = new Date();
-      activeUsers = activeUsers.filter((user) => {
-        return currentTime - user.timestamp < 110000;
-      });
-    };
-
-    addOrUpdateUser(profile);
-    removeInactiveUsers();
-
-    setInterval(() => {
-      removeInactiveUsers();
-    }, 120000);
-    setInterval(() => {
-      removeInactiveUsers();
-    }, 110000);
-    setInterval(() => {
-      removeInactiveUsers();
-    }, 100000);
-    setInterval(() => {
-      removeInactiveUsers();
-    }, 130000);
-  };
 
   let newMessage = await Chats.find();
   const handleNewChatMessages = async (data) => {

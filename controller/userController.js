@@ -81,7 +81,6 @@ const Register = async (req, res) => {
       weekly_wagered: 0,
       monthly_wagered: 0,
     };
-
     await User.create({
       email:data.user.email,
       user_id: data.user.uid,
