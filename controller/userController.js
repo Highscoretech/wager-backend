@@ -31,10 +31,11 @@ const createToken = (_id) => {
 };
 
 const handleColors = (()=>{
-  let color = [{color:"red", color: "blue", color: "black", color: "grey", color: "lemon", color: "blown"}]
+  let color = ["red", "blue", "black", "grey", "lemon", "brown", "pink","#75808c", "#9900CC" ]
   const random = Math.floor(Math.random() * color.length);
   return (color[random])
 })
+
 
 const Register = async (req, res) => {
   const {data} = req.body;
@@ -60,7 +61,7 @@ const Register = async (req, res) => {
       refuse_friends_request: false,
       refuse_tips: false,
       username: data.username ? data.username : data.user.displayName,
-      profile_image: data.user.photoURL ? {image: data.user.photoURL} : handleColors(),
+      profile_image: data.user.photoURL ? {image: data.user.photoURL} :{color: handleColors()},
       vip_level: 0,
       kyc_is_activated: false,
       phone: "-",

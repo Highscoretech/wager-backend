@@ -15,7 +15,7 @@ const Userschema = new schema({
         required: true,
     },
     profle_img: {
-        type: String,
+        type: Object,
         required: true,
     },
     hide_profile: {
