@@ -11,7 +11,7 @@ const Userschema = new schema({
         required: true,
     },
     profile_img: {
-        type: String,
+        type: Object,
         required: true,
     },
     game_id: {
