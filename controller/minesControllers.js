@@ -8,7 +8,6 @@ const BTCWallet = require("../model/btc-wallet");
 const ETHWallet = require("../model/ETH-wallet");
 const WGFWallet = require("../model/WGF-wallet")
 const salt = 'Qede00000000000w00wd001bw4dc6a1e86083f95500b096231436e9b25cbdd0075c4';
-
 function getResult(hash) {
   const allNums = [
     7, 2, 19, 25, 1, 13, 5, 24, 14, 6, 15, 9, 22, 16, 3, 17, 18, 20, 8, 21, 4,
@@ -20,7 +19,6 @@ function getResult(hash) {
   finalNums = createNums(finalNums, seed);
   return finalNums.map((m) => m.num.num);
 }
-
 function createNums(allNums, hash) {
   let nums = [];
   let h = crypto.createHash("SHA256").update(hash).digest("hex");
