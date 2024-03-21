@@ -10,6 +10,9 @@ const Profile = require("./routes/Profile.js");
 const diceGame = require("./routes/diceGame.js");
 const Wallet = require("./routes/wallet.js");
 const minegame = require("./routes/mines.js");
+const Lottery = require("./routes/lottery.js");
+const HiloGame = require("./routes/hiloGame.js");
+
 
 require("dotenv").config();
 app.use(express.json());
@@ -25,12 +28,15 @@ main();
 app.get("/", (req, res)=>{
     res.status(200).json({perfect:"Welcome to Wager.io chat please na"})
 })
+require("./controller/lotteryEngine.js");
 
  app.use("/api/users", User);
  app.use("/api/profile", Profile);
  app.use("/api/user/dice-game", diceGame);
  app.use("/api/wallet", Wallet);
  app.use("/api/user/mine-game", minegame);
+ app.use("/api/lottery", Lottery);
+ app.use("/api/hilo-game", HiloGame);
 
 const PORT = process.env.PORT || 5000; 
 mongoose.set('strictQuery', false);
