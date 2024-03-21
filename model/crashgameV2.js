@@ -8,7 +8,7 @@ const BetSchema = new schema({
     type: String,
   },
   avatar: {
-    type: String
+    type: Object
   },
   hidden: {
     type: Boolean,

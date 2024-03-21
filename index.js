@@ -12,7 +12,7 @@ const Wallet = require("./routes/wallet.js");
 const minegame = require("./routes/mines.js");
 const Lottery = require("./routes/lottery.js");
 const HiloGame = require("./routes/hiloGame.js");
-
+const CrashGame = require("./routes/crashgame.js");
 
 require("dotenv").config();
 app.use(express.json());
@@ -37,6 +37,7 @@ require("./controller/lotteryEngine.js");
  app.use("/api/user/mine-game", minegame);
  app.use("/api/lottery", Lottery);
  app.use("/api/hilo-game", HiloGame);
+ app.use("/api/user/crash-game", CrashGame);
 
 const PORT = process.env.PORT || 5000; 
 mongoose.set('strictQuery', false);
