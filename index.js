@@ -4,7 +4,6 @@ const cors = require("cors");
 const { createsocket } = require("./socket/index.js");
 const { createServer } = require("node:http");
 
-
 const app = express();
 const User = require("./routes/Users.js");
 const Profile = require("./routes/Profile.js");
@@ -18,6 +17,7 @@ const Deposit = require("./routes/deposit.js");
 const Withdraw = require("./routes/withdraw.js");
 const Transaction = require("./routes/transactions.js");
 const TransactionHistory = require("./routes/transactionHistory.js");
+const Stats = require("./routes/admin/statistic/statistics.js");
 
 require("dotenv").config();
 app.use(express.json());
@@ -47,13 +47,16 @@ require("./controller/lotteryEngine.js");
 app.use("/api/withdraw", Withdraw);
 app.use("/api/transaction-history", TransactionHistory);
 app.use("/api/transaction", Transaction);
+app.use("/api/stats", Stats);
 
-
-const PORT = process.env.PORT || 5000; 
 mongoose.set('strictQuery', false);
+const dbHost = "highscoreteh"
+const dbPass = "eNiIQbm4ZMSor8VL"
+const dbCompany = "wager"
+
 // connect database
 // const dbUri = `mongodb://localhost:27017/wager`
-const dbUri = `mongodb+srv://highscoreteh:eNiIQbm4ZMSor8VL@cluster0.xmpkpjc.mongodb.net/wager?retryWrites=true&w=majority`
+const dbUri = `mongodb+srv://${dbHost}:${dbPass}@cluster0.xmpkpjc.mongodb.net/${dbCompany}?retryWrites=true&w=majority`
 mongoose.connect(dbUri, { useNewUrlParser: true,  useUnifiedTopology: true })
     .then((result)=>  console.log('Database connected'))
     .catch((err)=> console.log(err))

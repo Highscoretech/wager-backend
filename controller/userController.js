@@ -31,7 +31,7 @@ const createToken = (_id) => {
 };
 
 const handleColors = (()=>{
-  let color = ["red", "blue", "black", "grey", "lemon", "brown", "pink","#75808c", "#9900CC" ]
+  let color = ["red", "blue", "black", "grey", "lemon", "brown", "pink","yellow", "violet", "tomato" ]
   const random = Math.floor(Math.random() * color.length);
   return (color[random])
 })
