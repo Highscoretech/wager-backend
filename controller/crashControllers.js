@@ -976,6 +976,7 @@ const handleScriptList = async (req, res) => {
   }
 };
 
+
 const input = `13d64828e4187853581fdaf22758c13843bbb91e518c67a44c6b55a1cc3e3a5a`;
 const numberOfTimesToHash = 300000;
 function generateHashes(seed, numberOfHashes) {
@@ -1003,7 +1004,6 @@ function generateHashes(seed, numberOfHashes) {
   });
 }
 // generateHashes(input, numberOfTimesToHash);
-
 
 const resetCrashDB = async () => {
   // await Promise.all([
