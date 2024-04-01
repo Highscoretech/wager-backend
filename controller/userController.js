@@ -11,8 +11,7 @@ const {createWGF, createEth, createbtc, createwagerToken,
   handleDefaultWallet  } = require("../wallet_transaction/index")
 const { InitializeDiceGame } = require("../controller/diceControllers");
 // const { InitializePlinkoGame } = require("../controller/plinkoController");
-const { CheckValidity } = require("./affiliateControllers");
-// const { CreateAffiliate, CheckValidity } = require("./affiliateControllers");
+const { CreateAffiliate, CheckValidity } = require("./affiliateControllers");
 // const { handleCreatePPDunlocked } = require("../profile_mangement/ppd_unlock");
 // const { handleNewNewlyRegisteredCount } = require("../profile_mangement/cashbacks");
 const { InitializeMinesGame } = require("../controller/minesControllers");
@@ -101,7 +100,7 @@ const Register = async (req, res) => {
     // InitializeKenoGame(user_id);
     InitializeMinesGame(user_id);
     // createCashbackTable(user_id);
-    // CreateAffiliate(user_id);
+    CreateAffiliate(user_id);
     // handleCreatePPDunlocked(user_id);
     const Token = createToken(user_id);
     let wallet = handleDefaultWallet();

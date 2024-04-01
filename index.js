@@ -9,6 +9,7 @@ const User = require("./routes/Users.js");
 const Profile = require("./routes/Profile.js");
 const diceGame = require("./routes/diceGame.js");
 const Wallet = require("./routes/wallet.js");
+const Affiliate = require("./routes/affiliate");
 const minegame = require("./routes/mines.js");
 const Lottery = require("./routes/lottery.js");
 const HiloGame = require("./routes/hiloGame.js");
@@ -34,7 +35,7 @@ app.get("/", (req, res)=>{
     res.status(200).json({perfect:"Welcome to Wager.io chat please na"})
 })
 
-require("./controller/lotteryEngine.js");
+// require("./controller/lotteryEngine.js");
  app.use("/api/users", User);
  app.use("/api/profile", Profile);
  app.use("/api/user/dice-game", diceGame);
@@ -47,8 +48,8 @@ require("./controller/lotteryEngine.js");
 app.use("/api/withdraw", Withdraw);
 app.use("/api/transaction-history", TransactionHistory);
 app.use("/api/transaction", Transaction);
+app.use("/api/affiliate", Affiliate);
 app.use("/api/stats", Stats);
-
 mongoose.set('strictQuery', false);
 const dbHost = "highscoreteh"
 const dbPass = "eNiIQbm4ZMSor8VL"
