@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const speakeasy = require("speakeasy");
+const qrcode = require("qrcode");
 const User = require("../model/User");
 const Profile = require("../model/Profile");
 const { createProfile } = require("./profileControllers");
@@ -16,8 +18,6 @@ const { CreateAffiliate, CheckValidity } = require("./affiliateControllers");
 // const { handleNewNewlyRegisteredCount } = require("../profile_mangement/cashbacks");
 const { InitializeMinesGame } = require("../controller/minesControllers");
 // const { InitializeKenoGame } = require("../controller/kenoControllers");
-// const { twoFactorAuth } = require("../utils/twoFactorAuth");
-// const { twoFactorAuthVerify } = require("../utils/twoFactorAuthVerify");
 // const { createNotify } = require("./notify");
 
 const BTCWallet = require("../model/btc-wallet")
@@ -34,7 +34,6 @@ const handleColors = (()=>{
   const random = Math.floor(Math.random() * color.length);
   return (color[random])
 })
-
 
 const Register = async (req, res) => {
   const {data} = req.body;
@@ -166,13 +165,43 @@ const mentionUsers = (async (req, res, next) => {
   }
 })
 
-// const twoFacAuth = async (req, res) => {
-//   await twoFactorAuth(req, res);
-// };
 
-// const twoFacAuthVerify = async (req, res) => {
-//   await twoFactorAuthVerify(req, res);
-// };
+const secret = speakeasy.generateSecret({length: 20})
+const secretBase32 = secret.base32
+const qrCodeUrl =  `otpauth://totp/Wager Services?secret=${encodeURIComponent(secretBase32)}`
+let qrlCodeImageUrl;
+qrcode.toDataURL(qrCodeUrl, (err, imageUrl)=>{
+  if(err){
+    console.error("Error generating or code", err)
+  }else{
+      qrlCodeImageUrl = imageUrl
+  }
+})
+
+const verifyToken = ((token, secret)=>{
+    return speakeasy.totp.verify({secret, encoding: "base32", token })
+})
+
+
+const twoFacAuth = async (req, res) => {
+  try{ 
+    res.status(200).json({key: secretBase32, qrCode: qrlCodeImageUrl})
+  }
+  catch(err){
+    res.status(400).json(err)
+  }
+};
+
+const twoFacAuthVerify = async (req, res) => {
+    const { token } = req.body
+    const isTokenValid = verifyToken(token, secretBase32)
+    if(isTokenValid){
+      res.status(200).json({message: "success"})
+    }
+    else {
+      res.status(500).json({message: "Invalid Verification code"})
+    }
+};
 
 const handleCheckUsername = (async(req, res)=>{
     try{
@@ -189,9 +218,9 @@ module.exports = {
   Register,
   previousChats,
   SingleUserByID,
-  // twoFacAuth,
+  twoFacAuth,
   handleSunspend,
   mentionUsers,
-  // twoFacAuthVerify,
+  twoFacAuthVerify,
   handleCheckUsername
 };
