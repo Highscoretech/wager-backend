@@ -182,7 +182,6 @@ const verifyToken = ((token, secret)=>{
     return speakeasy.totp.verify({secret, encoding: "base32", token })
 })
 
-
 const twoFacAuth = async (req, res) => {
   try{ 
     res.status(200).json({key: secretBase32, qrCode: qrlCodeImageUrl})
@@ -193,15 +192,25 @@ const twoFacAuth = async (req, res) => {
 };
 
 const twoFacAuthVerify = async (req, res) => {
-    const { token } = req.body
+  try{
+    const { token, user_id, action } = req.body
     const isTokenValid = verifyToken(token, secretBase32)
     if(isTokenValid){
-      res.status(200).json({message: "success"})
+      await Profile.updateOne({user_id},{
+        google_auth_is_activated: action
+      })
+      const result = await Profile.findOne({ user_id });
+      res.status(200).json({message: "success", user:result })
     }
     else {
       res.status(500).json({message: "Invalid Verification code"})
     }
+  }
+  catch(err){
+    res.status(404).json({message: err})
+  }
 };
+
 
 const handleCheckUsername = (async(req, res)=>{
     try{
