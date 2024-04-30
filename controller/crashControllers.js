@@ -1004,7 +1004,6 @@ function generateHashes(seed, numberOfHashes) {
   });
 }
 // generateHashes(input, numberOfTimesToHash);
-
 const resetCrashDB = async () => {
   // await Promise.all([
   //   CrashBet.deleteMany({}),

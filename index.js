@@ -51,6 +51,7 @@ app.use("/api/transaction", Transaction);
 app.use("/api/affiliate", Affiliate);
 app.use("/api/stats", Stats);
 mongoose.set('strictQuery', false);
+
 const dbHost = "highscoreteh"
 const dbPass = "eNiIQbm4ZMSor8VL"
 const dbCompany = "wager"
